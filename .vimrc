@@ -19,7 +19,7 @@ set shiftwidth=4
 set softtabstop=4
 set smarttab
 set expandtab
-set tabpagemax=15                   "allow max 15 tabs to be opened at the same time
+set tabpagemax=50                   "allow max 15 tabs to be opened at the same time
 set showtabline=2                   "shows tabbar at all times, even with only one tab open
 set clipboard=unnamed               "use osx clipboard
 set t_kb= t_kD=                 "backspace / del fix for iterm?
@@ -31,7 +31,7 @@ set scrolloff=2                     "Scroll when 2 lines from top/bottom
 :set backspace=2
 :hi Visual term=reverse cterm=reverse guibg=LightGrey
 syntax enable
-colors candystripe
+colors solarized
 
 " swap files to ~/.vim/
 " double slashes means adding paths to swapfile for managing duplicate filenames
@@ -60,22 +60,22 @@ nnoremap v <C-V>
 nnoremap <C-V> v
 vnoremap v <C-V>
 vnoremap <C-V> v
-" make BS/DEL work as expected in visual modes (i.e. delete the selected text)... 
+" make BS/DEL work as expected in visual modes (i.e. delete the selected text)...
 vmap <BS> x
 
 
 
 " --- Functions ---
 
-" Make the 81st column stand out
+" Make the 101st column stand out
 highlight ColorColumn ctermbg=magenta
-call matchadd('ColorColumn', '\%81v', 100)
+call matchadd('ColorColumn', '\%101v', 100)
 
 " Highlight match when jumping to it
 function! HLNext (blinktime)
     set invcursorline
     redraw
-    exec 'sleep ' . float2nr(a:blinktime * 1000) . 'm' 
+    exec 'sleep ' . float2nr(a:blinktime * 1000) . 'm'
     set invcursorline
     redraw
 endfunction
@@ -112,40 +112,23 @@ augroup NoSimultaneousEdits
 "    autocmd SwapExists *  call Make_session_finder( expand('<afile>') )
 augroup END
 
-" Automatically compile less files
-" structure:
-"  /assets/less/application.less
-"  /assets/css/application.css
-"function LessToCss()
-"  let current_file = shellescape(expand('%:p'))
-"  let filename = shellescape(expand('%:r'))
-"  let current_folder = expand('%:h')
-"  let mainless = expand('%:h') . '/../less/application.less'
-"  if filereadable(applicationless)
-"      echo "first"
-"    let command = "silent !lessc " . shellescape(applicationless) . " " . shellescape(current_folder . "/../css/application.css")
-"  else
-"    let command = "silent !lessc " . current_file . " " . filename . ".css"
-"  endif
-"  execute command
-"endfunction
-"autocmd BufWritePost,FileWritePost *.less call LessToCss()
-
 " Syntax highlighting for smarty files
 au BufRead,BufNewFile *.tpl set filetype=smarty
+" twig syntax
+au BufRead,BufNewFile *.twig set filetype=htmljinja
 
 
 " --- Plugins ---
 
 " pathogen
-call pathogen#infect() 
+call pathogen#infect()
 
 " indenting per filetype
 if has('autocmd')
   filetype plugin indent on
 endif
 
-" phpdoc 
+" phpdoc
 source ~/.vim/php-doc.vim
 inoremap <C-P> <ESC>:call PhpDocSingle()<CR>i
 nnoremap <C-P> :call PhpDocSingle()<CR>
@@ -158,3 +141,8 @@ endif
 
 " search replace visual block with ctrl + r
 vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
+
+" powerline
+set guifont=Meslo\ LG\ M\ DZ\ Regular\ for\ Powerline:h15
+let g:airline_powerline_fonts = 1
+set laststatus=2
